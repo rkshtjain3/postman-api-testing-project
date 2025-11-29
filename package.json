@@ -1,0 +1,35 @@
+{
+  "name": "postman-api-testing-framework",
+  "version": "1.0.0",
+  "description": "Complete API testing framework using Postman Collections and Newman for automated testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "./scripts/run_tests.sh",
+    "install-newman": "npm install -g newman newman-reporter-htmlextra",
+    "test-cli": "newman run ./postman_collections/API_Testing_Framework.postman_collection.json -e ./postman_environment/test_env.postman_environment.json",
+    "test-html": "newman run ./postman_collections/API_Testing_Framework.postman_collection.json -e ./postman_environment/test_env.postman_environment.json -r htmlextra --reporter-htmlextra-export ./reports/API_Test_Report.html"
+  },
+  "keywords": [
+    "api-testing",
+    "postman",
+    "newman",
+    "automation",
+    "testing-framework",
+    "rest-api",
+    "qa"
+  ],
+  "author": "API Testing Team",
+  "license": "MIT",
+  "devDependencies": {
+    "newman": "^6.0.0",
+    "newman-reporter-htmlextra": "^1.23.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/postman-api-testing-framework.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/postman-api-testing-framework/issues"
+  },
+  "homepage": "https://github.com/yourusername/postman-api-testing-framework#readme"
+}

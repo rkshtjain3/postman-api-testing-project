@@ -1,0 +1,537 @@
+{
+  "info": {
+    "name": "API_Testing_Framework",
+    "description": "Complete API testing framework for JSONPlaceholder and ReqRes APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "JSONPlaceholder Tests",
+      "item": [
+        {
+          "name": "GET All Posts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test('Response is an array', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test('Array contains posts', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson.length).to.be.greaterThan(0);",
+                  "});",
+                  "",
+                  "pm.test('Post schema validation', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    const post = responseJson[0];",
+                  "    pm.expect(post).to.have.property('userId');",
+                  "    pm.expect(post).to.have.property('id');",
+                  "    pm.expect(post).to.have.property('title');",
+                  "    pm.expect(post).to.have.property('body');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_placeholder}}/posts",
+              "host": ["{{base_url_placeholder}}"],
+              "path": ["posts"]
+            }
+          }
+        },
+        {
+          "name": "GET Single Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response time is less than 1500ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1500);",
+                  "});",
+                  "",
+                  "pm.test('Post ID is correct', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson.id).to.eql(1);",
+                  "});",
+                  "",
+                  "pm.test('Post has required properties', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('userId');",
+                  "    pm.expect(responseJson).to.have.property('title');",
+                  "    pm.expect(responseJson).to.have.property('body');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_placeholder}}/posts/1",
+              "host": ["{{base_url_placeholder}}"],
+              "path": ["posts", "1"]
+            }
+          }
+        },
+        {
+          "name": "POST Create Post",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.environment.set('random_title', 'Test Post ' + Math.floor(Math.random() * 1000));",
+                  "pm.environment.set('random_body', 'This is a test post body created at ' + new Date().toISOString());"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Response time is less than 2000ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "pm.test('Post created successfully', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('id');",
+                  "    pm.expect(responseJson.title).to.include('Test Post');",
+                  "});",
+                  "",
+                  "pm.test('Created post has correct structure', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('userId');",
+                  "    pm.expect(responseJson).to.have.property('title');",
+                  "    pm.expect(responseJson).to.have.property('body');",
+                  "    pm.expect(responseJson).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"{{random_title}}\",\n  \"body\": \"{{random_body}}\",\n  \"userId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url_placeholder}}/posts",
+              "host": ["{{base_url_placeholder}}"],
+              "path": ["posts"]
+            }
+          }
+        },
+        {
+          "name": "PUT Update Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Post updated successfully', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson.id).to.eql(1);",
+                  "    pm.expect(responseJson.title).to.include('Updated');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"title\": \"Updated Post Title\",\n  \"body\": \"Updated post body content\",\n  \"userId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url_placeholder}}/posts/1",
+              "host": ["{{base_url_placeholder}}"],
+              "path": ["posts", "1"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response time is acceptable', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_placeholder}}/posts/1",
+              "host": ["{{base_url_placeholder}}"],
+              "path": ["posts", "1"]
+            }
+          }
+        },
+        {
+          "name": "GET Non-existent Post (Negative Test)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test('Response body is empty object', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(Object.keys(responseJson)).to.have.lengthOf(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_placeholder}}/posts/999999",
+              "host": ["{{base_url_placeholder}}"],
+              "path": ["posts", "999999"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "ReqRes Tests",
+      "item": [
+        {
+          "name": "POST Login Success",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains token', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('token');",
+                  "    pm.environment.set('auth_token', responseJson.token);",
+                  "});",
+                  "",
+                  "pm.test('Token is not empty', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson.token).to.not.be.empty;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"eve.holt@reqres.in\",\n    \"password\": \"cityslicka\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url_reqres}}/login",
+              "host": ["{{base_url_reqres}}"],
+              "path": ["login"]
+            }
+          }
+        },
+        {
+          "name": "POST Login Failure (Negative Test)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('Response contains error message', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('error');",
+                  "    pm.expect(responseJson.error).to.include('Missing password');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"eve.holt@reqres.in\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url_reqres}}/login",
+              "host": ["{{base_url_reqres}}"],
+              "path": ["login"]
+            }
+          }
+        },
+        {
+          "name": "GET Users with Pagination",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains pagination info', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('page');",
+                  "    pm.expect(responseJson).to.have.property('per_page');",
+                  "    pm.expect(responseJson).to.have.property('total');",
+                  "    pm.expect(responseJson).to.have.property('total_pages');",
+                  "});",
+                  "",
+                  "pm.test('Page number is correct', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson.page).to.eql(2);",
+                  "});",
+                  "",
+                  "pm.test('Users array exists and has data', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('data');",
+                  "    pm.expect(responseJson.data).to.be.an('array');",
+                  "    pm.expect(responseJson.data.length).to.be.greaterThan(0);",
+                  "});",
+                  "",
+                  "pm.test('User schema validation', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    const user = responseJson.data[0];",
+                  "    pm.expect(user).to.have.property('id');",
+                  "    pm.expect(user).to.have.property('email');",
+                  "    pm.expect(user).to.have.property('first_name');",
+                  "    pm.expect(user).to.have.property('last_name');",
+                  "    pm.expect(user).to.have.property('avatar');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_reqres}}/users?page=2",
+              "host": ["{{base_url_reqres}}"],
+              "path": ["users"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "2"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST Create User",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.environment.set('random_name', 'TestUser' + Math.floor(Math.random() * 1000));",
+                  "pm.environment.set('random_job', 'QA Engineer');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('User created successfully', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('id');",
+                  "    pm.expect(responseJson).to.have.property('createdAt');",
+                  "    pm.expect(responseJson.name).to.include('TestUser');",
+                  "});",
+                  "",
+                  "pm.test('Created user has correct job', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson.job).to.eql('QA Engineer');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"{{random_name}}\",\n    \"job\": \"{{random_job}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url_reqres}}/users",
+              "host": ["{{base_url_reqres}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "PUT Update User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('User updated successfully', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.expect(responseJson).to.have.property('updatedAt');",
+                  "    pm.expect(responseJson.name).to.eql('Updated User');",
+                  "    pm.expect(responseJson.job).to.eql('Senior QA Engineer');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Updated User\",\n    \"job\": \"Senior QA Engineer\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url_reqres}}/users/2",
+              "host": ["{{base_url_reqres}}"],
+              "path": ["users", "2"]
+            }
+          }
+        },
+        {
+          "name": "DELETE User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 204', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "pm.test('Response body is empty', function () {",
+                  "    pm.expect(pm.response.text()).to.be.empty;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url_reqres}}/users/2",
+              "host": ["{{base_url_reqres}}"],
+              "path": ["users", "2"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url_placeholder",
+      "value": "https://jsonplaceholder.typicode.com"
+    },
+    {
+      "key": "base_url_reqres",
+      "value": "https://reqres.in/api"
+    }
+  ]
+}
