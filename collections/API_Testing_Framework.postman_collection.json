@@ -1,12 +1,13 @@
 {
   "info": {
     "name": "API_Testing_Framework",
-    "description": "Complete API testing framework for JSONPlaceholder and ReqRes APIs",
+    "description": "Professional API testing framework for JSONPlaceholder and ReqRes APIs with comprehensive validation and reporting",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
       "name": "JSONPlaceholder Tests",
+      "description": "Complete CRUD testing for JSONPlaceholder fake REST API",
       "item": [
         {
           "name": "GET All Posts",
@@ -15,24 +16,29 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "// Validate HTTP status code",
                   "pm.test('Status code is 200', function () {",
                   "    pm.response.to.have.status(200);",
                   "});",
                   "",
+                  "// Performance validation - response time should be under 2 seconds",
                   "pm.test('Response time is less than 2000ms', function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(2000);",
                   "});",
                   "",
+                  "// Data type validation - response should be an array",
                   "pm.test('Response is an array', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson).to.be.an('array');",
                   "});",
                   "",
+                  "// Content validation - array should contain posts",
                   "pm.test('Array contains posts', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson.length).to.be.greaterThan(0);",
                   "});",
                   "",
+                  "// Schema validation - verify post object structure",
                   "pm.test('Post schema validation', function () {",
                   "    const responseJson = pm.response.json();",
                   "    const post = responseJson[0];",
@@ -40,6 +46,16 @@
                   "    pm.expect(post).to.have.property('id');",
                   "    pm.expect(post).to.have.property('title');",
                   "    pm.expect(post).to.have.property('body');",
+                  "});",
+                  "",
+                  "// Data type validation for post properties",
+                  "pm.test('Post properties have correct data types', function () {",
+                  "    const responseJson = pm.response.json();",
+                  "    const post = responseJson[0];",
+                  "    pm.expect(post.userId).to.be.a('number');",
+                  "    pm.expect(post.id).to.be.a('number');",
+                  "    pm.expect(post.title).to.be.a('string');",
+                  "    pm.expect(post.body).to.be.a('string');",
                   "});"
                 ]
               }
@@ -52,7 +68,8 @@
               "raw": "{{base_url_placeholder}}/posts",
               "host": ["{{base_url_placeholder}}"],
               "path": ["posts"]
-            }
+            },
+            "description": "Retrieve all posts from JSONPlaceholder API with comprehensive validation"
           }
         },
         {
@@ -62,19 +79,23 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "// HTTP status validation",
                   "pm.test('Status code is 200', function () {",
                   "    pm.response.to.have.status(200);",
                   "});",
                   "",
+                  "// Performance validation",
                   "pm.test('Response time is less than 1500ms', function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(1500);",
                   "});",
                   "",
+                  "// Content validation - verify correct post ID",
                   "pm.test('Post ID is correct', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson.id).to.eql(1);",
                   "});",
                   "",
+                  "// Schema validation - verify required properties exist",
                   "pm.test('Post has required properties', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson).to.have.property('userId');",
@@ -92,7 +113,8 @@
               "raw": "{{base_url_placeholder}}/posts/1",
               "host": ["{{base_url_placeholder}}"],
               "path": ["posts", "1"]
-            }
+            },
+            "description": "Retrieve a specific post by ID with validation"
           }
         },
         {
@@ -102,6 +124,7 @@
               "listen": "prerequest",
               "script": {
                 "exec": [
+                  "// Generate dynamic test data for post creation",
                   "pm.environment.set('random_title', 'Test Post ' + Math.floor(Math.random() * 1000));",
                   "pm.environment.set('random_body', 'This is a test post body created at ' + new Date().toISOString());"
                 ]
@@ -111,20 +134,24 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "// HTTP status validation for successful creation",
                   "pm.test('Status code is 201', function () {",
                   "    pm.response.to.have.status(201);",
                   "});",
                   "",
+                  "// Performance validation",
                   "pm.test('Response time is less than 2000ms', function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(2000);",
                   "});",
                   "",
+                  "// Content validation - verify post was created with correct data",
                   "pm.test('Post created successfully', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson).to.have.property('id');",
                   "    pm.expect(responseJson.title).to.include('Test Post');",
                   "});",
                   "",
+                  "// Schema validation - verify response structure",
                   "pm.test('Created post has correct structure', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson).to.have.property('userId');",
@@ -152,7 +179,8 @@
               "raw": "{{base_url_placeholder}}/posts",
               "host": ["{{base_url_placeholder}}"],
               "path": ["posts"]
-            }
+            },
+            "description": "Create a new post with dynamic test data"
           }
         },
         {
@@ -162,10 +190,12 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "// HTTP status validation for successful update",
                   "pm.test('Status code is 200', function () {",
                   "    pm.response.to.have.status(200);",
                   "});",
                   "",
+                  "// Content validation - verify post was updated correctly",
                   "pm.test('Post updated successfully', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson.id).to.eql(1);",
@@ -191,7 +221,8 @@
               "raw": "{{base_url_placeholder}}/posts/1",
               "host": ["{{base_url_placeholder}}"],
               "path": ["posts", "1"]
-            }
+            },
+            "description": "Update an existing post with new content"
           }
         },
         {
@@ -201,10 +232,12 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "// HTTP status validation for successful deletion",
                   "pm.test('Status code is 200', function () {",
                   "    pm.response.to.have.status(200);",
                   "});",
                   "",
+                  "// Performance validation",
                   "pm.test('Response time is acceptable', function () {",
                   "    pm.expect(pm.response.responseTime).to.be.below(2000);",
                   "});"
@@ -219,7 +252,8 @@
               "raw": "{{base_url_placeholder}}/posts/1",
               "host": ["{{base_url_placeholder}}"],
               "path": ["posts", "1"]
-            }
+            },
+            "description": "Delete a specific post by ID"
           }
         },
         {
@@ -229,10 +263,12 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status code is 404', function () {",
+                  "// Negative test - verify 404 status for non-existent resource",
+                  "pm.test('Status code is 404 for non-existent post', function () {",
                   "    pm.response.to.have.status(404);",
                   "});",
                   "",
+                  "// Content validation - verify empty response for non-existent resource",
                   "pm.test('Response body is empty object', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(Object.keys(responseJson)).to.have.lengthOf(0);",
@@ -248,13 +284,15 @@
               "raw": "{{base_url_placeholder}}/posts/999999",
               "host": ["{{base_url_placeholder}}"],
               "path": ["posts", "999999"]
-            }
+            },
+            "description": "Negative test case - attempt to retrieve non-existent post"
           }
         }
       ]
     },
     {
       "name": "ReqRes Tests",
+      "description": "Authentication and user management testing for ReqRes API",
       "item": [
         {
           "name": "POST Login Success",
@@ -263,16 +301,20 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "// HTTP status validation for successful authentication",
                   "pm.test('Status code is 200', function () {",
                   "    pm.response.to.have.status(200);",
                   "});",
                   "",
-                  "pm.test('Response contains token', function () {",
+                  "// Authentication validation - verify token is returned",
+                  "pm.test('Response contains authentication token', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson).to.have.property('token');",
+                  "    // Store token for subsequent requests",
                   "    pm.environment.set('auth_token', responseJson.token);",
                   "});",
                   "",
+                  "// Content validation - verify token is not empty",
                   "pm.test('Token is not empty', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson.token).to.not.be.empty;",
@@ -297,7 +339,8 @@
               "raw": "{{base_url_reqres}}/login",
               "host": ["{{base_url_reqres}}"],
               "path": ["login"]
-            }
+            },
+            "description": "Successful login with valid credentials"
           }
         },
         {
@@ -307,10 +350,12 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status code is 400', function () {",
+                  "// Negative test - verify 400 status for invalid login",
+                  "pm.test('Status code is 400 for invalid login', function () {",
                   "    pm.response.to.have.status(400);",
                   "});",
                   "",
+                  "// Error handling validation - verify error message is returned",
                   "pm.test('Response contains error message', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson).to.have.property('error');",
@@ -336,7 +381,8 @@
               "raw": "{{base_url_reqres}}/login",
               "host": ["{{base_url_reqres}}"],
               "path": ["login"]
-            }
+            },
+            "description": "Negative test - login attempt without password"
           }
         },
         {
@@ -346,10 +392,12 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "// HTTP status validation",
                   "pm.test('Status code is 200', function () {",
                   "    pm.response.to.have.status(200);",
                   "});",
                   "",
+                  "// Pagination validation - verify pagination metadata",
                   "pm.test('Response contains pagination info', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson).to.have.property('page');",
@@ -358,11 +406,13 @@
                   "    pm.expect(responseJson).to.have.property('total_pages');",
                   "});",
                   "",
+                  "// Content validation - verify correct page number",
                   "pm.test('Page number is correct', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson.page).to.eql(2);",
                   "});",
                   "",
+                  "// Data validation - verify users array exists and has data",
                   "pm.test('Users array exists and has data', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson).to.have.property('data');",
@@ -370,6 +420,7 @@
                   "    pm.expect(responseJson.data.length).to.be.greaterThan(0);",
                   "});",
                   "",
+                  "// Schema validation - verify user object structure",
                   "pm.test('User schema validation', function () {",
                   "    const responseJson = pm.response.json();",
                   "    const user = responseJson.data[0];",
@@ -396,7 +447,8 @@
                   "value": "2"
                 }
               ]
-            }
+            },
+            "description": "Retrieve paginated list of users with validation"
           }
         },
         {
@@ -406,6 +458,7 @@
               "listen": "prerequest",
               "script": {
                 "exec": [
+                  "// Generate dynamic test data for user creation",
                   "pm.environment.set('random_name', 'TestUser' + Math.floor(Math.random() * 1000));",
                   "pm.environment.set('random_job', 'QA Engineer');"
                 ]
@@ -415,10 +468,12 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "// HTTP status validation for successful creation",
                   "pm.test('Status code is 201', function () {",
                   "    pm.response.to.have.status(201);",
                   "});",
                   "",
+                  "// Content validation - verify user was created successfully",
                   "pm.test('User created successfully', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson).to.have.property('id');",
@@ -426,6 +481,7 @@
                   "    pm.expect(responseJson.name).to.include('TestUser');",
                   "});",
                   "",
+                  "// Data validation - verify job field is correct",
                   "pm.test('Created user has correct job', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson.job).to.eql('QA Engineer');",
@@ -450,7 +506,8 @@
               "raw": "{{base_url_reqres}}/users",
               "host": ["{{base_url_reqres}}"],
               "path": ["users"]
-            }
+            },
+            "description": "Create a new user with dynamic test data"
           }
         },
         {
@@ -460,10 +517,12 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "// HTTP status validation for successful update",
                   "pm.test('Status code is 200', function () {",
                   "    pm.response.to.have.status(200);",
                   "});",
                   "",
+                  "// Content validation - verify user was updated correctly",
                   "pm.test('User updated successfully', function () {",
                   "    const responseJson = pm.response.json();",
                   "    pm.expect(responseJson).to.have.property('updatedAt');",
@@ -490,7 +549,8 @@
               "raw": "{{base_url_reqres}}/users/2",
               "host": ["{{base_url_reqres}}"],
               "path": ["users", "2"]
-            }
+            },
+            "description": "Update an existing user with new information"
           }
         },
         {
@@ -500,10 +560,12 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status code is 204', function () {",
+                  "// HTTP status validation for successful deletion",
+                  "pm.test('Status code is 204 for successful deletion', function () {",
                   "    pm.response.to.have.status(204);",
                   "});",
                   "",
+                  "// Content validation - verify empty response body",
                   "pm.test('Response body is empty', function () {",
                   "    pm.expect(pm.response.text()).to.be.empty;",
                   "});"
@@ -518,7 +580,8 @@
               "raw": "{{base_url_reqres}}/users/2",
               "host": ["{{base_url_reqres}}"],
               "path": ["users", "2"]
-            }
+            },
+            "description": "Delete a specific user by ID"
           }
         }
       ]

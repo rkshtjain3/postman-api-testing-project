@@ -1,13 +1,12 @@
 {
-  "name": "postman-api-testing-framework",
+  "name": "postman-api-testing-project",
   "version": "1.0.0",
-  "description": "Complete API testing framework using Postman Collections and Newman for automated testing",
+  "description": "Professional API testing framework using Postman Collections and Newman CLI",
   "main": "index.js",
   "scripts": {
-    "test": "./scripts/run_tests.sh",
-    "install-newman": "npm install -g newman newman-reporter-htmlextra",
-    "test-cli": "newman run ./postman_collections/API_Testing_Framework.postman_collection.json -e ./postman_environment/test_env.postman_environment.json",
-    "test-html": "newman run ./postman_collections/API_Testing_Framework.postman_collection.json -e ./postman_environment/test_env.postman_environment.json -r htmlextra --reporter-htmlextra-export ./reports/API_Test_Report.html"
+    "test": "newman run collections/API_Testing_Framework.postman_collection.json -e environments/test_env.postman_environment.json -r cli,html --reporter-html-export reports/report.html",
+    "test:cli": "newman run collections/API_Testing_Framework.postman_collection.json -e environments/test_env.postman_environment.json -r cli",
+    "install-newman": "npm install -g newman"
   },
   "keywords": [
     "api-testing",
@@ -16,14 +15,15 @@
     "automation",
     "testing-framework",
     "rest-api",
-    "qa"
+    "qa",
+    "javascript"
   ],
   "author": "API Testing Team",
   "license": "MIT",
-  "devDependencies": {
-    "newman": "^6.0.0",
-    "newman-reporter-htmlextra": "^1.23.0"
+  "dependencies": {
+    "newman": "^6.0.0"
   },
+  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/rkshtjain3/postman-api-testing-project.git"
