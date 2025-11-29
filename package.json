@@ -26,10 +26,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/postman-api-testing-framework.git"
+    "url": "https://github.com/rkshtjain3/postman-api-testing-project.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/postman-api-testing-framework/issues"
+    "url": "https://github.com/rkshtjain3/postman-api-testing-project/issues"
   },
-  "homepage": "https://github.com/yourusername/postman-api-testing-framework#readme"
+  "homepage": "https://github.com/rkshtjain3/postman-api-testing-project#readme"
 }

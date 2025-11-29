@@ -68,8 +68,8 @@ postman-api-testing-framework/
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/postman-api-testing-framework.git
-cd postman-api-testing-framework
+git clone https://github.com/rkshtjain3/postman-api-testing-project.git
+cd postman-api-testing-project
 ```
 
 ### 2. Install Newman and Reporter
