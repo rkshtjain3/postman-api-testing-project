@@ -1,174 +1,253 @@
-# 🚀 Postman API Testing Framework
+# 🚀 Postman API Testing Project
 
-A comprehensive API testing framework built with Postman Collections and Newman for automated testing of REST APIs. This project provides production-ready test suites for JSONPlaceholder and ReqRes APIs with detailed reporting capabilities.
+A production-ready API testing framework demonstrating comprehensive REST API testing using Postman Collections and Newman automation. This project showcases professional API testing practices with real-world scenarios using JSONPlaceholder and ReqRes public APIs.
 
 ## 📋 Overview
 
-This framework includes:
-- ✅ Complete Postman Collections with test scripts
-- ✅ Environment variables and dynamic data generation
-- ✅ Comprehensive test assertions (status codes, response time, schema validation)
-- ✅ Negative test cases for error handling
-- ✅ Automated HTML reporting with Newman
-- ✅ CI/CD ready scripts
+This repository demonstrates a complete API testing solution that validates REST endpoints through automated test suites. The project tests two popular public APIs - **JSONPlaceholder** (fake REST API for prototyping) and **ReqRes** (real API for testing HTTP requests) - covering CRUD operations, authentication, pagination, and error handling scenarios.
 
-## 🎯 Project Features
+**What this project demonstrates:**
+- Professional API testing methodology
+- Automated test execution with detailed reporting
+- Environment-based configuration management
+- Comprehensive validation strategies (status codes, response schemas, performance)
+- CI/CD integration capabilities
 
-### APIs Tested
-1. **JSONPlaceholder API** - Fake REST API for testing
-   - GET /posts (all posts)
-   - GET /posts/1 (single post)
-   - POST /posts (create post)
-   - PUT /posts/1 (update post)
-   - DELETE /posts/1 (delete post)
+## ✨ Features / What This Repo Shows
 
-2. **ReqRes API** - Real API for testing HTTP requests
-   - POST /login (authentication)
-   - GET /users?page=2 (paginated users)
-   - POST /users (create user)
-   - PUT /users/2 (update user)
-   - DELETE /users/2 (delete user)
+- **Complete CRUD Testing**: GET, POST, PUT, DELETE operations with full validation
+- **Authentication Testing**: Login success/failure scenarios with token management
+- **Response Validation**: Status codes, JSON schema validation, response time assertions
+- **Environment Support**: Configurable base URLs and dynamic variables
+- **Newman Integration**: Command-line test execution with HTML/CLI reporting
+- **Negative Testing**: Error handling and edge case validation
+- **Dynamic Data Generation**: Runtime test data creation using pre-request scripts
+- **Professional Reporting**: Detailed HTML reports with request/response logs
 
-### Test Coverage
-- ✅ Status code validation
-- ✅ Response time assertions
-- ✅ JSON schema validation
-- ✅ Property existence checks
-- ✅ Data type validation
-- ✅ Negative test scenarios
-- ✅ Dynamic data generation
-- ✅ Environment variable usage
+## 🛠️ Prerequisites
+
+**Required Tools:**
+- **Node.js** (v14 or higher) - [Download here](https://nodejs.org/)
+- **npm** (comes with Node.js) - Package manager
+- **Newman** (v6.0+) - Postman CLI runner
+- **newman-reporter-htmlextra** - Enhanced HTML reporting
+
+**Optional:**
+- **Postman Desktop App** - For collection editing and manual testing
+- **Git** - For version control
+
+**Environment Variables:**
+- No sensitive environment variables required
+- All API endpoints use public, free APIs
+- Dynamic variables are generated during test execution
 
 ## 📁 Project Structure
 
 ```
-postman-api-testing-framework/
+postman-api-testing-project/
 │
-├── postman_collections/
+├── postman_collections/                    # Postman collection files
 │   └── API_Testing_Framework.postman_collection.json
 │
-├── postman_environment/
+├── postman_environment/                    # Environment configurations
 │   └── test_env.postman_environment.json
 │
-├── reports/
-│   └── (generated HTML reports)
+├── reports/                                # Generated test reports
+│   └── README.md                          # Report documentation
 │
-├── scripts/
-│   └── run_tests.sh
+├── scripts/                               # Automation scripts
+│   ├── run_tests.sh                      # Main test runner
+│   └── setup_check.sh                    # Environment verification
 │
-├── README.md
-└── package.json
+├── .gitignore                             # Git ignore rules
+├── README.md                              # This documentation
+└── package.json                           # Project metadata & scripts
 ```
 
-## 🛠️ Installation & Setup
+**Key Files Description:**
+- **`postman_collections/`** - Contains the main Postman collection with all API tests
+- **`postman_environment/`** - Environment file with base URLs and variables
+- **`reports/`** - Auto-generated HTML and CLI test reports
+- **`scripts/`** - Shell scripts for test execution and setup verification
+- **`package.json`** - npm scripts and project configuration
 
-### Prerequisites
-- Node.js (v14 or higher)
-- npm (Node Package Manager)
+## 🚀 How to Run Tests
 
-### 1. Clone the Repository
+### Quick Start
 ```bash
+# 1. Clone the repository
 git clone https://github.com/rkshtjain3/postman-api-testing-project.git
 cd postman-api-testing-project
-```
 
-### 2. Install Newman and Reporter
-```bash
+# 2. Install Newman globally
 npm install -g newman newman-reporter-htmlextra
-```
 
-Or use the npm script:
-```bash
-npm run install-newman
-```
-
-### 3. Import Collection to Postman (Optional)
-1. Open Postman application
-2. Click "Import" button
-3. Select `postman_collections/API_Testing_Framework.postman_collection.json`
-4. Import environment: `postman_environment/test_env.postman_environment.json`
-
-## 🚀 Running Tests
-
-### Method 1: Using the Test Runner Script (Recommended)
-```bash
+# 3. Run tests (recommended method)
 ./scripts/run_tests.sh
 ```
 
-### Method 2: Using npm Scripts
+### Alternative Methods
+
+**Using npm scripts:**
 ```bash
-# Run tests with HTML report
-npm test
-
-# Run tests with CLI output only
-npm run test-cli
-
-# Run tests with HTML report (alternative)
-npm run test-html
+npm test                    # Run with HTML report
+npm run test-cli           # CLI output only
+npm run test-html          # HTML report only
 ```
 
-### Method 3: Direct Newman Commands
-
-#### Basic CLI Report
+**Direct Newman commands:**
 ```bash
-newman run ./postman_collections/API_Testing_Framework.postman_collection.json \
-  -e ./postman_environment/test_env.postman_environment.json
-```
+# Basic CLI report
+newman run postman_collections/API_Testing_Framework.postman_collection.json \
+  -e postman_environment/test_env.postman_environment.json
 
-#### HTML Report Generation
-```bash
-newman run ./postman_collections/API_Testing_Framework.postman_collection.json \
-  -e ./postman_environment/test_env.postman_environment.json \
+# With HTML report
+newman run postman_collections/API_Testing_Framework.postman_collection.json \
+  -e postman_environment/test_env.postman_environment.json \
   -r cli,htmlextra \
-  --reporter-htmlextra-export ./reports/API_Test_Report.html
+  --reporter-htmlextra-export reports/API_Test_Report.html
 ```
 
-## 📊 Viewing Test Reports
+### Verify Setup
+```bash
+./scripts/setup_check.sh    # Check all dependencies
+```
 
-After running tests, HTML reports are generated in the `reports/` directory:
+> 📊 **Sample Report**: See [docs/sample-report-info.md](docs/sample-report-info.md) for detailed report examples and expected output.
 
-1. Navigate to the `reports/` folder
-2. Open the latest HTML report in your web browser
-3. View detailed test results, including:
-   - Test execution summary
-   - Individual request/response details
-   - Failed test information
-   - Performance metrics
-   - Request/response logs
+## 📊 Expected Output / Reports
 
-## 🔧 Configuration
+### Test Execution Results
+After running tests, you'll get:
 
-### Environment Variables
-The framework uses the following environment variables (defined in `test_env.postman_environment.json`):
+**CLI Summary:**
+```
+→ API_Testing_Framework
+├── JSONPlaceholder Tests
+│   ├── ✓ GET All Posts (6 tests)
+│   ├── ✓ GET Single Post (4 tests)
+│   ├── ✓ POST Create Post (4 tests)
+│   ├── ✓ PUT Update Post (2 tests)
+│   ├── ✓ DELETE Post (2 tests)
+│   └── ✓ GET Non-existent Post (2 tests)
+└── ReqRes Tests
+    ├── ✓ POST Login Success (3 tests)
+    ├── ✓ POST Login Failure (2 tests)
+    ├── ✓ GET Users with Pagination (5 tests)
+    ├── ✓ POST Create User (3 tests)
+    ├── ✓ PUT Update User (2 tests)
+    └── ✓ DELETE User (2 tests)
 
-| Variable | Description | Default Value |
-|----------|-------------|---------------|
+┌─────────────────────────┬──────────────────┬──────────────────┐
+│                         │         executed │           failed │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              iterations │                1 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│                requests │               12 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│            test-scripts │               35 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│      prerequest-scripts │                4 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              assertions │               35 │                0 │
+└─────────────────────────┴──────────────────┴──────────────────┘
+```
+
+**HTML Report Features:**
+- 📈 **Executive Summary** - Pass/fail statistics and performance metrics
+- 🔍 **Detailed Request/Response** - Full HTTP headers, body, and response data
+- ⚡ **Performance Analysis** - Response times and performance trends
+- 🐛 **Failure Analysis** - Detailed error information for failed tests
+- 📋 **Test Coverage** - Complete list of validations performed
+
+### Validations Performed
+- **Status Code Validation** - Ensures correct HTTP response codes (200, 201, 400, 404, 204)
+- **Response Time Assertions** - Validates API performance (< 2000ms)
+- **JSON Schema Validation** - Verifies response structure and data types
+- **Property Existence Checks** - Confirms required fields are present
+- **Authentication Testing** - Token generation and validation
+- **Error Handling** - Negative test scenarios and edge cases
+
+## 🎯 APIs Tested
+
+### 1. JSONPlaceholder API (`https://jsonplaceholder.typicode.com`)
+**Endpoints Covered:**
+- `GET /posts` - Retrieve all posts (array validation, performance testing)
+- `GET /posts/1` - Get single post (schema validation, property checks)
+- `POST /posts` - Create new post (dynamic data generation, creation validation)
+- `PUT /posts/1` - Update existing post (modification validation)
+- `DELETE /posts/1` - Delete post (deletion confirmation)
+- `GET /posts/999999` - **Negative test** (404 error handling)
+
+### 2. ReqRes API (`https://reqres.in/api`)
+**Endpoints Covered:**
+- `POST /login` - Authentication success (token generation)
+- `POST /login` - **Negative test** (missing password validation)
+- `GET /users?page=2` - Paginated user list (pagination validation)
+- `POST /users` - Create user (dynamic data, timestamp validation)
+- `PUT /users/2` - Update user (modification confirmation)
+- `DELETE /users/2` - Delete user (204 status validation)
+
+## ⚙️ Environment / Variable Management
+
+### Environment Configuration
+The `test_env.postman_environment.json` file contains:
+
+| Variable | Purpose | Value |
+|----------|---------|-------|
 | `base_url_placeholder` | JSONPlaceholder API base URL | `https://jsonplaceholder.typicode.com` |
 | `base_url_reqres` | ReqRes API base URL | `https://reqres.in/api` |
-| `auth_token` | Authentication token (set dynamically) | `""` |
-| `random_title` | Dynamic post title | Generated during test |
-| `random_body` | Dynamic post body | Generated during test |
-| `random_name` | Dynamic user name | Generated during test |
-| `random_job` | Dynamic job title | Generated during test |
+| `auth_token` | Dynamic authentication token | Set during login test |
+| `random_title` | Generated post title | Created via pre-request script |
+| `random_body` | Generated post content | Created via pre-request script |
+| `random_name` | Generated user name | Created via pre-request script |
+| `random_job` | Generated job title | Created via pre-request script |
 
-### Customizing Tests
-1. **Modify Collection**: Edit `API_Testing_Framework.postman_collection.json`
-2. **Update Environment**: Modify `test_env.postman_environment.json`
-3. **Add New Tests**: Use Postman GUI to add tests, then export the collection
+### Dynamic Variable Usage
+```javascript
+// Pre-request script example (auto-generated)
+pm.environment.set('random_title', 'Test Post ' + Math.floor(Math.random() * 1000));
+pm.environment.set('random_body', 'Test content created at ' + new Date().toISOString());
 
-## 🧪 Test Scenarios Included
+// Usage in request body
+{
+  "title": "{{random_title}}",
+  "body": "{{random_body}}",
+  "userId": 1
+}
+```
 
-### JSONPlaceholder Tests
-- **Positive Tests**: CRUD operations on posts
-- **Negative Tests**: Requesting non-existent resources
-- **Performance Tests**: Response time validation
-- **Schema Tests**: JSON structure validation
+### Customization
+- **Add new APIs**: Update base URLs in environment file
+- **Modify test data**: Edit pre-request scripts in collection
+- **Add variables**: Update environment file and reference with `{{variable_name}}`
 
-### ReqRes Tests
-- **Authentication Tests**: Login success/failure scenarios
-- **CRUD Operations**: User management
-- **Pagination Tests**: Handling paginated responses
-- **Error Handling**: Invalid request scenarios
+## 🤝 Contributing
+
+Contributions are welcome! Here's how you can help:
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/new-api-tests`)
+3. **Add** your API tests or improvements
+4. **Test** your changes (`./scripts/run_tests.sh`)
+5. **Commit** your changes (`git commit -am 'Add new API test scenarios'`)
+6. **Push** to the branch (`git push origin feature/new-api-tests`)
+7. **Create** a Pull Request
+
+### Ideas for Contributions
+- Add tests for new public APIs
+- Improve test assertions and validations
+- Add performance benchmarking
+- Create additional reporting formats
+- Add CI/CD pipeline examples
+
+## 📝 Notes
+
+- **No API Keys Required**: All APIs used are free and public
+- **Cross-Platform**: Works on Windows, macOS, and Linux
+- **CI/CD Ready**: Includes GitHub Actions example
+- **Beginner Friendly**: Well-documented with clear examples
+- **Production Ready**: Follows industry best practices
 
 ## 📈 CI/CD Integration
 
@@ -192,24 +271,16 @@ jobs:
           path: reports/
 ```
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/new-test`)
-3. Commit your changes (`git commit -am 'Add new test scenario'`)
-4. Push to the branch (`git push origin feature/new-test`)
-5. Create a Pull Request
-
 ## 📝 Best Practices Implemented
 
-- ✅ Environment variables for configuration
-- ✅ Dynamic data generation in pre-request scripts
-- ✅ Comprehensive test assertions
-- ✅ Proper error handling and negative testing
-- ✅ Modular test organization
-- ✅ Detailed test documentation
-- ✅ Automated reporting
-- ✅ Version control friendly JSON format
+- ✅ **Environment-based Configuration** - Separate configs for different environments
+- ✅ **Dynamic Data Generation** - Runtime test data creation
+- ✅ **Comprehensive Assertions** - Multiple validation layers per request
+- ✅ **Negative Testing** - Error scenarios and edge cases
+- ✅ **Modular Organization** - Logical grouping of related tests
+- ✅ **Automated Reporting** - HTML and CLI output formats
+- ✅ **Version Control Friendly** - JSON format with proper .gitignore
+- ✅ **Documentation** - Clear setup and usage instructions
 
 ## 🐛 Troubleshooting
 
@@ -240,11 +311,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Useful Links
 
-- [Postman Documentation](https://learning.postman.com/)
-- [Newman Documentation](https://github.com/postmanlabs/newman)
-- [JSONPlaceholder API](https://jsonplaceholder.typicode.com/)
-- [ReqRes API](https://reqres.in/)
+- [Postman Learning Center](https://learning.postman.com/) - Official Postman documentation
+- [Newman CLI Documentation](https://github.com/postmanlabs/newman) - Command-line runner
+- [JSONPlaceholder API Docs](https://jsonplaceholder.typicode.com/) - Fake REST API
+- [ReqRes API Docs](https://reqres.in/) - Real API for testing
+- [Newman HTML Extra Reporter](https://github.com/DannyDainton/newman-reporter-htmlextra) - Enhanced reporting
 
 ---
 
-**Happy Testing! 🎉**
+**🎯 Ready to test APIs like a pro? Clone, run, and explore! 🚀**
